@@ -1,11 +1,13 @@
 name: Update BTC price
 
 on:
-  schedule:
-    # Every 15 minutes. Note: GitHub may delay or skip cron runs during peak
-    # load, especially on public repos, and won't run cron on a repo that has
-    # had no activity for 60 days.
-    - cron: "*/15 * * * *"
+  # Schedule disabled — manual runs only via the Actions tab.
+  # To re-enable, uncomment the schedule block below.
+  # schedule:
+  #   # Every 15 minutes. Note: GitHub may delay or skip cron runs during peak
+  #   # load, especially on public repos, and won't run cron on a repo that has
+  #   # had no activity for 60 days.
+  #   - cron: "*/15 * * * *"
   workflow_dispatch:
 
 permissions:
