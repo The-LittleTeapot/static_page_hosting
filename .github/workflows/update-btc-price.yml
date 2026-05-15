@@ -1,0 +1,68 @@
+name: Update BTC price
+
+on:
+  schedule:
+    # Every 15 minutes. Note: GitHub may delay or skip cron runs during peak
+    # load, especially on public repos, and won't run cron on a repo that has
+    # had no activity for 60 days.
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-btc-price
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Fetch BTC price and rewrite index.html
+        run: |
+          set -euo pipefail
+
+          export PRICE=$(curl -fsSL \
+            "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd" \
+            | python3 -c "import json,sys; print(f\"{json.load(sys.stdin)['bitcoin']['usd']:,.2f}\")")
+          export NOW=$(date -u +"%Y-%m-%d %H:%M")
+          echo "BTC: \$$PRICE @ $NOW UTC"
+
+          python3 <<'PY'
+          import os, re, pathlib
+          path = pathlib.Path("index.html")
+          html = path.read_text(encoding="utf-8")
+          price = os.environ["PRICE"]
+          now   = os.environ["NOW"]
+          html = re.sub(
+              r"<!-- BTC_PRICE_START -->.*?<!-- BTC_PRICE_END -->",
+              f"<!-- BTC_PRICE_START -->{price}<!-- BTC_PRICE_END -->",
+              html, flags=re.DOTALL,
+          )
+          html = re.sub(
+              r"<!-- BTC_TIME_START -->.*?<!-- BTC_TIME_END -->",
+              f"<!-- BTC_TIME_START -->{now}<!-- BTC_TIME_END -->",
+              html, flags=re.DOTALL,
+          )
+          path.write_text(html, encoding="utf-8")
+          PY
+
+          # Expose PRICE to later steps for the commit message.
+          echo "PRICE=$PRICE" >> "$GITHUB_ENV"
+
+      - name: Commit and push if changed
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- index.html; then
+            echo "No change in index.html; skipping commit."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "chore: update BTC price to \$$PRICE"
+          git push
