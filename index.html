@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Hello from Cloudflare Pages</title>
+<meta name="description" content="A playful test page deployed on Cloudflare Pages." />
+<style>
+  :root {
+    --c1: #ff6b6b;
+    --c2: #ffd93d;
+    --c3: #6bcB77;
+    --c4: #4d96ff;
+    --c5: #b66dff;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: #1a1a2e;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(255,107,107,0.55), transparent 45%),
+      radial-gradient(circle at 85% 15%, rgba(255,217,61,0.55), transparent 45%),
+      radial-gradient(circle at 80% 85%, rgba(77,150,255,0.55), transparent 45%),
+      radial-gradient(circle at 15% 90%, rgba(107,203,119,0.55), transparent 45%),
+      linear-gradient(135deg, #fff7f0, #f0f7ff);
+    background-attachment: fixed;
+    overflow-x: hidden;
+  }
+  .stage {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 6vh 6vw;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: #1a1a2e;
+    color: #fff;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  h1 {
+    font-size: clamp(2.4rem, 7vw, 5.5rem);
+    line-height: 1.05;
+    margin: 0 0 18px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+  h1 .word {
+    display: inline-block;
+    background: linear-gradient(90deg, var(--c1), var(--c2), var(--c3), var(--c4), var(--c5));
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+            background-clip: text;
+    color: transparent;
+    animation: shimmer 6s ease-in-out infinite;
+  }
+  @keyframes shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50%      { background-position: 100% 50%; }
+  }
+  p.lede {
+    max-width: 620px;
+    font-size: clamp(1rem, 2.2vw, 1.25rem);
+    line-height: 1.55;
+    color: #2a2a3e;
+    margin: 0 0 32px;
+  }
+  .buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 36px;
+  }
+  button {
+    font: inherit;
+    font-weight: 700;
+    border: 0;
+    cursor: pointer;
+    padding: 14px 22px;
+    border-radius: 14px;
+    color: #fff;
+    background: #1a1a2e;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    box-shadow: 0 6px 0 rgba(0,0,0,0.15);
+  }
+  button.alt {
+    background: linear-gradient(135deg, var(--c1), var(--c5));
+  }
+  button:hover { transform: translateY(-2px); }
+  button:active { transform: translateY(1px); box-shadow: 0 3px 0 rgba(0,0,0,0.15); }
+  .confetti {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: -1;
+  }
+  .dot {
+    position: absolute;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    opacity: 0.85;
+    animation: float 9s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50%      { transform: translateY(-30px) rotate(180deg); }
+  }
+  footer {
+    margin-top: 32px;
+    font-size: 13px;
+    color: #555;
+  }
+  code {
+    background: #1a1a2e;
+    color: #ffd93d;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.95em;
+  }
+</style>
+</head>
+<body>
+  <div class="confetti" aria-hidden="true">
+    <span class="dot" style="left:8%;  top:18%; background:var(--c1); animation-delay:0s"></span>
+    <span class="dot" style="left:22%; top:72%; background:var(--c2); animation-delay:1.1s"></span>
+    <span class="dot" style="left:40%; top:30%; background:var(--c3); animation-delay:2.3s"></span>
+    <span class="dot" style="left:58%; top:65%; background:var(--c4); animation-delay:0.6s"></span>
+    <span class="dot" style="left:75%; top:22%; background:var(--c5); animation-delay:1.7s"></span>
+    <span class="dot" style="left:88%; top:78%; background:var(--c1); animation-delay:2.9s"></span>
+    <span class="dot" style="left:33%; top:12%; background:var(--c4); animation-delay:3.4s"></span>
+    <span class="dot" style="left:66%; top:85%; background:var(--c2); animation-delay:0.9s"></span>
+  </div>
+
+  <main class="stage">
+    <span class="eyebrow">Cloudflare Pages Test</span>
+    <h1>It's <span class="word">alive</span> and on the edge.</h1>
+    <p class="lede">
+      If you can read this, your static site is live on Cloudflare Pages.
+      Edit <code>index.html</code>, push to <code>main</code>, and Cloudflare will
+      automatically redeploy in seconds.
+    </p>
+    <div class="buttons">
+      <button id="party">Throw confetti</button>
+      <button class="alt" onclick="window.open('https://developers.cloudflare.com/pages/', '_blank')">Read the docs</button>
+    </div>
+    <footer>
+      Built with HTML, CSS, and good vibes. <span id="stamp"></span>
+    </footer>
+  </main>
+
+  <script>
+    document.getElementById('stamp').textContent = 'Last loaded: ' + new Date().toLocaleString();
+
+    const colors = ['#ff6b6b','#ffd93d','#6bcB77','#4d96ff','#b66dff'];
+    const layer = document.querySelector('.confetti');
+
+    document.getElementById('party').addEventListener('click', () => {
+      for (let i = 0; i < 40; i++) {
+        const d = document.createElement('span');
+        d.className = 'dot';
+        d.style.left = Math.random() * 100 + '%';
+        d.style.top  = '-20px';
+        d.style.background = colors[i % colors.length];
+        d.style.width = d.style.height = (8 + Math.random() * 14) + 'px';
+        d.style.animation = 'none';
+        d.style.transition = 'transform 2.5s ease-out, opacity 2.5s ease-out';
+        layer.appendChild(d);
+        requestAnimationFrame(() => {
+          d.style.transform = `translate(${(Math.random()-0.5)*300}px, ${window.innerHeight + 40}px) rotate(${Math.random()*720}deg)`;
+          d.style.opacity = '0';
+        });
+        setTimeout(() => d.remove(), 2700);
+      }
+    });
+  </script>
+</body>
+</html>
